@@ -1,9 +1,13 @@
 <template>
   <div id="app">
     <TodoHeader></TodoHeader>
-    <TodoInput></TodoInput>
-    <TodoList></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
+    <TodoList 
+      v-bind:propsdata="todoItems" 
+      v-on:removeItem="removeOneItem" 
+      v-on:toggleItem="toggleOneItem">
+    </TodoList>
+    <TodoFooter v-on:clearAll="clearAllItems"></TodoFooter>
   </div>
 </template>
 
@@ -15,6 +19,40 @@ import TodoFooter from './components/TodoFooter.vue'
 
 
 export default {
+  data: function() {
+    return {
+      todoItems: []
+    }
+  },
+  methods: {
+    addOneItem: function(todoItem) {
+      const obj = {completed: false, item: todoItem};
+      localStorage.setItem(todoItem, JSON.stringify(obj));
+      this.todoItems.push(obj);
+    },
+    removeOneItem: function(todoItem, index) {
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1);
+    },
+    toggleOneItem: function(todoItem, index) {
+      this.todoItems[index].completed = !this.todoItems[index].completed;
+      localStorage.removeItem(todoItem.item);
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
+    clearAllItems: function() {
+      localStorage.clear();
+      this.todoItems = [];
+    }  
+  },
+  created: function() {
+      if (localStorage.length > 0) {
+        for (let i = 0; i < localStorage.length; i++) {
+          if (localStorage.key(i) !== "loglevel:webpack-dev-server") { 
+            this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+          }
+        }
+      }
+    },
     components: {
       "TodoHeader" : TodoHeader,
       "TodoInput" : TodoInput,
@@ -25,12 +63,17 @@ export default {
 </script>
 
 <style>
+  * {
+    font-family: 'Jua', sans-serif;
+  }
+
   body {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: #f6f6f6;
+    /* background-color: #f6f6f6; */
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
     margin: auto;
   }
 
@@ -38,6 +81,7 @@ export default {
     border-style: groove;
     width: 50rem;
     height: 50px;
+    font-size: 1.5rem;
     text-align: center;
     border-radius: 5px;
   }

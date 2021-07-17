@@ -2,7 +2,7 @@
   <div>
     <ul>
       <li 
-        v-for="( todoItem, index ) in todoItems" 
+        v-for="( todoItem, index ) in propsdata" 
         v-bind:key="todoItem.item" 
         class="shadow"
       >
@@ -30,32 +30,16 @@
 
 <script>
   export default {
-    data: function() {
-      return {
-        todoItems: []
-      }
-    },
+    props: ['propsdata'],
     methods: {
       removeTodo: function(todoItem, index) {
-        localStorage.removeItem(todoItem);
-        this.todoItems.splice(index, 1);
+        this.$emit('removeItem', todoItem, index);
       }, 
       toggleComplete: function(todoItem, index) {
-        todoItem.completed = !todoItem.completed;
-        localStorage.removeItem(todoItem.item);
-        localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
-        console.log(index);
+        this.$emit('toggleItem', todoItem, index);
       }
     },
-    created: function() {
-      if (localStorage.length > 0) {
-        for (let i = 0; i < localStorage.length; i++) {
-          if (localStorage.key(i) !== "loglevel:webpack-dev-server") { 
-            this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-          }
-        }
-      }
-    }
+   
   }
 </script>
 
@@ -78,12 +62,14 @@
     padding: 0 1.5rem;
     background: white;
     border-radius: 5px;
+    font-size: 1.3rem;
   }
 
   .checkBtn {
     line-height: 45px;
     color: #62acde;
     margin-right: 15px;
+    cursor: pointer;
   }
 
   .checkBtnCompleted {
@@ -98,9 +84,10 @@
   .removeBtn {
     margin-left: auto;
     color: #de4343;
-    transition: all 300ms ease-in;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
   }
   .removeBtn:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
 </style>

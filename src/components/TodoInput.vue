@@ -17,8 +17,7 @@
     methods: {
       addTodo: function() {
         if (this.newTodoItem !== '') {
-          const obj = {completed: false, item: this.newTodoItem};
-          localStorage.setItem(this.newTodoItem, JSON.stringify(obj));
+          this.$emit("addTodoItem",this.newTodoItem);
           this.clearInput();
         }
       },
@@ -44,12 +43,10 @@ input:focus {
   height: 50px;
   line-height: 50px;
   border-radius: 5px;
-  border-radius: 5px 0 0 5px;
 }
 
 .inputBox input {
   border-style: none;
-  font-size: 0.9rem;
 }
 
 .addContainer {
@@ -60,8 +57,17 @@ input:focus {
   border-radius: 0 5px 5px 0;
 }
 
+.addContainer:hover {
+  cursor: pointer;
+}
+
 .addBtn {
   color: white;
   vertical-align: middle;
+  transition: all 300ms ease-in-out;
+}
+
+.addBtn:hover {
+  transform: rotate(45deg) scale(1.5);
 }
 </style>
