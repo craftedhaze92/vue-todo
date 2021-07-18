@@ -1,24 +1,7 @@
-# vue-todo
+## vue-todo
+Vue.js로 만든 Todo List 입니다.
 
-## Project setup
-```
-npm install
-```
+![VueTodoList](https://user-images.githubusercontent.com/68048248/126028858-6f64f7ac-ab02-496e-8804-8caf83c51344.gif)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- 모달 <br/>
+![뷰투두-모달](https://user-images.githubusercontent.com/68048248/126062473-1acb2de4-21fb-4069-8452-2801f70dc86e.gif)
